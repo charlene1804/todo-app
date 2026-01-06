@@ -1,5 +1,6 @@
 import { useTodos } from "../hooks/useTodos"
 import { TodoInput } from "./TodoInput"
+import { TodoItem } from "./TodoItem"
 
 export default function TodoList() {
     const {
@@ -16,23 +17,14 @@ export default function TodoList() {
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <TodoInput onAdd={addTodo} />
 
-            {/* タスク一覧 */}
             <ul style={{ listStyle: "none", padding: 0 }}>
                 {todos.map((todoItem) => (
-                    <li
+                    <TodoItem
                         key={todoItem.id}
-                        style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}
-                    >
-                        <input
-                            type="checkbox"
-                            checked={todoItem.selected}
-                            onChange={() => toggleTodo(todoItem.id)}
-                        />
-                        <span>{todoItem.text}</span>
-                        <button onClick={() => deleteTodo(todoItem.id)}>
-                            削除
-                        </button>
-                    </li>
+                        todo={todoItem}
+                        onToggle={toggleTodo}
+                        onDelete={deleteTodo}
+                    />
                 ))}
             </ul>
 
