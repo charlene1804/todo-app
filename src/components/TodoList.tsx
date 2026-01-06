@@ -26,6 +26,7 @@ export default function TodoList() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {/* 入力フォーム */}
             <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                     type="text"
@@ -37,6 +38,7 @@ export default function TodoList() {
                 <button onClick={addTodo}>追加</button>
             </div>
 
+            {/* タスク一覧 */}
             <ul style={{ listStyle: "none", padding: 0 }}>
                 {todos.map((todo) => (
                     <li
@@ -63,6 +65,22 @@ export default function TodoList() {
                     </li>
                 ))}
             </ul>
+
+            {/* 削除ボタン */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <button
+                    onClick={() =>
+                        setTodos(todos.filter((todoItem) => !todoItem.selected))
+                    }
+                >
+                    選択削除
+                </button>
+
+                <button onClick={() => setTodos([])}>
+                    全削除
+                </button>
+            </div>
+
         </div>
     )
 }
