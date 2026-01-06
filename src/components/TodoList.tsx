@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useLocalStorage } from "../hooks/useLocalStorage"
 
 interface TodoItem {
     id: number
@@ -8,15 +9,7 @@ interface TodoItem {
 
 export default function TodoList() {
     const [text, setText] = useState("")
-    const [todos, setTodos] = useState<TodoItem[]>(() => {
-        const stored = localStorage.getItem("todos")
-        return stored ? JSON.parse(stored) : []
-    })
-
-    // Save to localStorage
-    useEffect(() => {
-        localStorage.setItem("todos", JSON.stringify(todos))
-    }, [todos])
+    const [todos, setTodos] = useLocalStorage<TodoItem[]>("todos", [])
 
     const addTodo = () => {
         if (!text.trim()) return
