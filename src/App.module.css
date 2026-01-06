@@ -1,0 +1,38 @@
+.app {
+    padding: 1rem;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0 0 2rem 0;
+    color: rgba(255, 255, 255, 0.87);
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .app {
+        padding: 2rem;
+        max-width: 600px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .app {
+        max-width: 700px;
+        padding: 3rem 2rem;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+}
+

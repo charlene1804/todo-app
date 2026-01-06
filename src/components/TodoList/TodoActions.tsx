@@ -1,3 +1,5 @@
+import styles from "./TodoActions.module.css"
+
 interface TodoActionsProps {
     hasSelected: boolean
     hasTodos: boolean
@@ -12,11 +14,19 @@ export function TodoActions({
     onDeleteAll,
 }: TodoActionsProps) {
     return (
-        <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-            <button onClick={onDeleteSelected} disabled={!hasSelected}>
+        <div className={styles.actionsContainer}>
+            <button
+                onClick={onDeleteSelected}
+                disabled={!hasSelected}
+                className={`${styles.actionButton} ${styles.deleteSelectedButton}`}
+            >
                 選択削除
             </button>
-            <button onClick={onDeleteAll} disabled={!hasTodos}>
+            <button
+                onClick={onDeleteAll}
+                disabled={!hasTodos}
+                className={`${styles.actionButton} ${styles.deleteAllButton}`}
+            >
                 全削除
             </button>
         </div>

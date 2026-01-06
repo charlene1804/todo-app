@@ -1,4 +1,5 @@
 import { useState } from "react"
+import styles from "./TodoInput.module.css"
 
 interface TodoInputProps {
     onAdd: (text: string) => void
@@ -14,7 +15,7 @@ export function TodoInput({ onAdd }: TodoInputProps) {
     }
 
     return (
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div className={styles.inputContainer}>
             <input
                 type="text"
                 value={text}
@@ -27,9 +28,11 @@ export function TodoInput({ onAdd }: TodoInputProps) {
                     }
                 }}
                 placeholder="ここにTODOを入力"
-                style={{ flex: 1 }}
+                className={styles.input}
             />
-            <button onClick={handleSubmit}>追加</button>
+            <button onClick={handleSubmit} className={styles.addButton}>
+                追加
+            </button>
         </div>
     )
 }

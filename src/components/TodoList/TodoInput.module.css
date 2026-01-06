@@ -1,0 +1,68 @@
+.inputContainer {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.87);
+    font-family: inherit;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #646cff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.addButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 2px solid #646cff;
+    border-radius: 8px;
+    background-color: #646cff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+.addButton:hover:not(:disabled) {
+    background-color: #535bf2;
+    border-color: #535bf2;
+}
+
+.addButton:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.addButton:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+@media (min-width: 768px) {
+    .input {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.05rem;
+    }
+
+    .addButton {
+        padding: 0.875rem 2rem;
+        font-size: 1.05rem;
+    }
+}
+

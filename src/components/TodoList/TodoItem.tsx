@@ -1,4 +1,5 @@
 import type { TodoItem as TodoItemType } from "../../hooks/useTodos"
+import styles from "./TodoItem.module.css"
 
 interface TodoItemProps {
     todo: TodoItemType
@@ -8,21 +9,25 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
     return (
-        <li
-            style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                marginBottom: "0.5rem",
-            }}
-        >
+        <li className={styles.todoItem}>
             <input
                 type="checkbox"
                 checked={todo.selected}
                 onChange={() => onToggle(todo.id)}
+                className={styles.checkbox}
             />
-            <span>{todo.text}</span>
-            <button onClick={() => onDelete(todo.id)}>削除</button>
+            <span
+                className={`${styles.todoText} ${todo.selected ? styles.todoTextSelected : ""
+                    }`}
+            >
+                {todo.text}
+            </span>
+            <button
+                onClick={() => onDelete(todo.id)}
+                className={styles.deleteButton}
+            >
+                削除
+            </button>
         </li>
     )
 }

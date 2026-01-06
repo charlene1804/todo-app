@@ -2,6 +2,7 @@ import { useTodos } from "../../hooks/useTodos"
 import { TodoInput } from "./TodoInput"
 import { TodoItem } from "./TodoItem"
 import { TodoActions } from "./TodoActions"
+import styles from "./TodoList.module.css"
 
 export default function TodoList() {
     const {
@@ -15,10 +16,10 @@ export default function TodoList() {
     } = useTodos()
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <div className={styles.container}>
             <TodoInput onAdd={addTodo} />
 
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul className={styles.todoList}>
                 {todos.map((todoItem) => (
                     <TodoItem
                         key={todoItem.id}

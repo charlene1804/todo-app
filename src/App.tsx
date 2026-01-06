@@ -1,9 +1,10 @@
 import TodoList from "./components/TodoList"
+import styles from "./App.module.css"
 
 function App() {
   return (
-    <div style={{ padding: "1rem", maxWidth: 600, margin: "0 auto" }}>
-      <h1>TODOアプリ</h1>
+    <div className={styles.app}>
+      <h1 className={styles.title}>TODOアプリ</h1>
       <TodoList />
     </div>
   )
