@@ -6,6 +6,7 @@ interface TodoInputProps {
 
 export function TodoInput({ onAdd }: TodoInputProps) {
     const [text, setText] = useState("")
+    const [isComposing, setIsComposing] = useState(false)
 
     const handleSubmit = () => {
         onAdd(text)
@@ -18,8 +19,10 @@ export function TodoInput({ onAdd }: TodoInputProps) {
                 type="text"
                 value={text}
                 onChange={(event) => setText(event.target.value)}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
                 onKeyDown={(event) => {
-                    if (event.key === "Enter") {
+                    if (event.key === "Enter" && !isComposing) {
                         handleSubmit()
                     }
                 }}
