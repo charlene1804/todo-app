@@ -71,12 +71,14 @@ export default function TodoList() {
                 <button
                     onClick={() =>
                         setTodos(todos.filter((todoItem) => !todoItem.selected))
+
                     }
+                    disabled={!todos.some((todoItem) => todoItem.selected)}
                 >
                     選択削除
                 </button>
 
-                <button onClick={() => setTodos([])}>
+                <button onClick={() => setTodos([])} disabled={!todos.length}>
                     全削除
                 </button>
             </div>
