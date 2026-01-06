@@ -1,11 +1,10 @@
-import { useState } from "react"
 import { useTodos } from "../hooks/useTodos"
+import { TodoInput } from "./TodoInput"
 
 export default function TodoList() {
-    const [text, setText] = useState("")
     const {
         todos,
-        addTodo: addTodoToState,
+        addTodo,
         toggleTodo,
         deleteTodo,
         deleteSelected,
@@ -13,29 +12,9 @@ export default function TodoList() {
         hasSelected,
     } = useTodos()
 
-    const addTodo = () => {
-        addTodoToState(text)
-        setText("")
-    }
-
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {/* 入力フォーム */}
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
-                    type="text"
-                    value={text}
-                    onChange={(event) => setText(event.target.value)}
-                    onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                            addTodo()
-                        }
-                    }}
-                    placeholder="ここにTODOを入力"
-                    style={{ flex: 1 }}
-                />
-                <button onClick={addTodo}>追加</button>
-            </div>
+            <TodoInput onAdd={addTodo} />
 
             {/* タスク一覧 */}
             <ul style={{ listStyle: "none", padding: 0 }}>
