@@ -43,7 +43,7 @@ export default function TodoList() {
                 {todos.map((todo) => (
                     <li
                         key={todo.id}
-                        style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                        style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}
                     >
                         <input
                             type="checkbox"
