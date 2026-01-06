@@ -1,4 +1,4 @@
-import { TodoItem as TodoItemType } from "../hooks/useTodos"
+import type { TodoItem as TodoItemType } from "../../hooks/useTodos"
 
 interface TodoItemProps {
     todo: TodoItemType
