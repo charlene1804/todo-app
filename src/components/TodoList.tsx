@@ -1,6 +1,7 @@
 import { useTodos } from "../hooks/useTodos"
 import { TodoInput } from "./TodoInput"
 import { TodoItem } from "./TodoItem"
+import { TodoActions } from "./TodoActions"
 
 export default function TodoList() {
     const {
@@ -28,20 +29,12 @@ export default function TodoList() {
                 ))}
             </ul>
 
-            {/* 削除ボタン */}
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-                <button
-                    onClick={deleteSelected}
-                    disabled={!hasSelected}
-                >
-                    選択削除
-                </button>
-
-                <button onClick={deleteAll} disabled={!todos.length}>
-                    全削除
-                </button>
-            </div>
-
+            <TodoActions
+                hasSelected={hasSelected}
+                hasTodos={todos.length > 0}
+                onDeleteSelected={deleteSelected}
+                onDeleteAll={deleteAll}
+            />
         </div>
     )
 }
