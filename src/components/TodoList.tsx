@@ -32,6 +32,11 @@ export default function TodoList() {
                     type="text"
                     value={text}
                     onChange={(event) => setText(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            addTodo()
+                        }
+                    }}
                     placeholder="ここにTODOを入力"
                     style={{ flex: 1 }}
                 />
