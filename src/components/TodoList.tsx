@@ -1,19 +1,20 @@
 import { useState } from "react"
-import { useLocalStorage } from "../hooks/useLocalStorage"
-
-interface TodoItem {
-    id: number
-    text: string
-    selected: boolean
-}
+import { useTodos } from "../hooks/useTodos"
 
 export default function TodoList() {
     const [text, setText] = useState("")
-    const [todos, setTodos] = useLocalStorage<TodoItem[]>("todos", [])
+    const {
+        todos,
+        addTodo: addTodoToState,
+        toggleTodo,
+        deleteTodo,
+        deleteSelected,
+        deleteAll,
+        hasSelected,
+    } = useTodos()
 
     const addTodo = () => {
-        if (!text.trim()) return
-        setTodos([...todos, { id: Date.now(), text, selected: false }])
+        addTodoToState(text)
         setText("")
     }
 
@@ -38,26 +39,18 @@ export default function TodoList() {
 
             {/* タスク一覧 */}
             <ul style={{ listStyle: "none", padding: 0 }}>
-                {todos.map((todo) => (
+                {todos.map((todoItem) => (
                     <li
-                        key={todo.id}
+                        key={todoItem.id}
                         style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}
                     >
                         <input
                             type="checkbox"
-                            checked={todo.selected}
-                            onChange={() =>
-                                setTodos(
-                                    todos.map((todoItem) =>
-                                        todoItem.id === todo.id ? { ...todoItem, selected: !todoItem.selected } : todoItem
-                                    )
-                                )
-                            }
+                            checked={todoItem.selected}
+                            onChange={() => toggleTodo(todoItem.id)}
                         />
-                        <span>{todo.text}</span>
-                        <button
-                            onClick={() => setTodos(todos.filter((todoItem) => todoItem.id !== todo.id))}
-                        >
+                        <span>{todoItem.text}</span>
+                        <button onClick={() => deleteTodo(todoItem.id)}>
                             削除
                         </button>
                     </li>
@@ -67,16 +60,13 @@ export default function TodoList() {
             {/* 削除ボタン */}
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
                 <button
-                    onClick={() =>
-                        setTodos(todos.filter((todoItem) => !todoItem.selected))
-
-                    }
-                    disabled={!todos.some((todoItem) => todoItem.selected)}
+                    onClick={deleteSelected}
+                    disabled={!hasSelected}
                 >
                     選択削除
                 </button>
 
-                <button onClick={() => setTodos([])} disabled={!todos.length}>
+                <button onClick={deleteAll} disabled={!todos.length}>
                     全削除
                 </button>
             </div>
