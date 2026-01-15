@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a TODO web application built with React and TypeScript.
+This is a TODO web application built with React and TypeScript in 90 minutes.
 Users can add, view, delete single or multiple tasks, delete all tasks, and have their list persist after page reload.
 
 ## 概要
