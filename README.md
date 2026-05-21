@@ -5,10 +5,14 @@
 This is a TODO web application built with React and TypeScript in 90 minutes.
 Users can add, view, delete single or multiple tasks, delete all tasks, and have their list persist after page reload.
 
+**Live demo:** [https://todo-app-charlene.vercel.app/](https://todo-app-charlene.vercel.app/)
+
 ## 概要
 
 本アプリは React と TypeScript で作成した TODO Web アプリです。
 タスクの追加、閲覧、単一削除、複数選択削除、全削除、ページリロード後もデータ保持が可能です。
+
+**デプロイ:** [https://todo-app-charlene.vercel.app/](https://todo-app-charlene.vercel.app/)
 
 ---
 
