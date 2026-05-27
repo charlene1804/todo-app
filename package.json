@@ -15,6 +15,7 @@
     "build": "yarn workspace client build && yarn workspace server build",
     "lint": "yarn workspace client lint",
     "db:generate": "yarn workspace server prisma generate",
-    "db:migrate": "yarn workspace server prisma migrate dev"
+    "db:migrate": "yarn workspace server prisma migrate dev",
+    "db:migrate:deploy": "yarn workspace server prisma migrate deploy"
   }
 }
