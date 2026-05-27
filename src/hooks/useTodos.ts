@@ -1,42 +1,65 @@
-import { useLocalStorage } from "./useLocalStorage"
+import { useCallback, useMemo, useState } from "react"
+import {
+    clearTodos,
+    createTodo,
+    listTodos,
+    removeTodo,
+    removeTodosWhere,
+    updateTodo,
+} from "../data/todoStore"
+import type { Todo } from "../types/todo"
 
-export interface TodoItem {
-    id: number
-    text: string
-    selected: boolean
-}
+export type { Todo as TodoItem } from "../types/todo"
 
 export function useTodos() {
-    const [todos, setTodos] = useLocalStorage<TodoItem[]>("todos", [])
+    const [todos, setTodos] = useState<Todo[]>(() => listTodos())
 
-    const addTodo = (text: string) => {
+    const sync = useCallback((next: Todo[]) => {
+        setTodos(next)
+    }, [])
+
+    const addTodo = useCallback((text: string) => {
         if (!text.trim()) return
-        setTodos([...todos, { id: Date.now(), text, selected: false }])
-    }
+        try {
+            createTodo(text)
+            sync(listTodos())
+        } catch {
+            return
+        }
+    }, [sync])
 
-    const toggleTodo = (id: number) => {
-        setTodos(
-            todos.map((todoItem) =>
-                todoItem.id === id
-                    ? { ...todoItem, selected: !todoItem.selected }
-                    : todoItem
-            )
-        )
-    }
+    const toggleTodo = useCallback(
+        (id: string) => {
+            const current = listTodos().find((t) => t.id === id)
+            if (!current) return
+            updateTodo(id, { completed: !current.completed })
+            sync(listTodos())
+        },
+        [sync]
+    )
 
-    const deleteTodo = (id: number) => {
-        setTodos(todos.filter((todoItem) => todoItem.id !== id))
-    }
+    const deleteTodo = useCallback(
+        (id: string) => {
+            removeTodo(id)
+            sync(listTodos())
+        },
+        [sync]
+    )
 
-    const deleteSelected = () => {
-        setTodos(todos.filter((todoItem) => !todoItem.selected))
-    }
+    const deleteSelected = useCallback(() => {
+        removeTodosWhere((t) => t.completed)
+        sync(listTodos())
+    }, [sync])
 
-    const deleteAll = () => {
-        setTodos([])
-    }
+    const deleteAll = useCallback(() => {
+        clearTodos()
+        sync(listTodos())
+    }, [sync])
 
-    const hasSelected = todos.some((todoItem) => todoItem.selected)
+    const hasSelected = useMemo(
+        () => todos.some((t) => t.completed),
+        [todos]
+    )
 
     return {
         todos,
@@ -48,4 +71,3 @@ export function useTodos() {
         hasSelected,
     }
 }
-

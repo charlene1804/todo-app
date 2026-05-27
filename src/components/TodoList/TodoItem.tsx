@@ -1,10 +1,10 @@
-import type { TodoItem as TodoItemType } from "../../hooks/useTodos"
+import type { Todo } from "../../types/todo"
 import styles from "./TodoItem.module.css"
 
 interface TodoItemProps {
-    todo: TodoItemType
-    onToggle: (id: number) => void
-    onDelete: (id: number) => void
+    todo: Todo
+    onToggle: (id: string) => void
+    onDelete: (id: string) => void
 }
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
@@ -12,15 +12,15 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
         <li className={styles.todoItem}>
             <input
                 type="checkbox"
-                checked={todo.selected}
+                checked={todo.completed}
                 onChange={() => onToggle(todo.id)}
                 className={styles.checkbox}
             />
             <span
-                className={`${styles.todoText} ${todo.selected ? styles.todoTextSelected : ""
+                className={`${styles.todoText} ${todo.completed ? styles.todoTextSelected : ""
                     }`}
             >
-                {todo.text}
+                {todo.title}
             </span>
             <button
                 onClick={() => onDelete(todo.id)}
@@ -31,4 +31,3 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
         </li>
     )
 }
-
