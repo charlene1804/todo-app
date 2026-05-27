@@ -2,7 +2,10 @@
   "name": "todo-app",
   "private": true,
   "workspaces": {
-    "packages": ["client", "server"],
+    "packages": [
+      "client",
+      "server"
+    ],
     "nohoist": [
       "client/vite",
       "client/@vitejs/plugin-react",
@@ -10,6 +13,7 @@
     ]
   },
   "scripts": {
+    "dev": "concurrently -k -n server,client -c auto \"yarn dev:server\" \"yarn dev:client\"",
     "dev:client": "yarn workspace client dev",
     "dev:server": "yarn workspace server dev",
     "build": "yarn workspace client build && yarn workspace server build",
@@ -17,5 +21,8 @@
     "db:generate": "yarn workspace server prisma generate",
     "db:migrate": "yarn workspace server prisma migrate dev",
     "db:migrate:deploy": "yarn workspace server prisma migrate deploy"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
