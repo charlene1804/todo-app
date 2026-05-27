@@ -3,8 +3,9 @@ import styles from "./TodoActions.module.css"
 interface TodoActionsProps {
     hasSelected: boolean
     hasTodos: boolean
-    onDeleteSelected: () => void
-    onDeleteAll: () => void
+    onDeleteSelected: () => void | Promise<void>
+    onDeleteAll: () => void | Promise<void>
+    disabled?: boolean
 }
 
 export function TodoActions({
@@ -12,19 +13,23 @@ export function TodoActions({
     hasTodos,
     onDeleteSelected,
     onDeleteAll,
+    disabled,
 }: TodoActionsProps) {
+    const d = Boolean(disabled)
     return (
         <div className={styles.actionsContainer}>
             <button
-                onClick={onDeleteSelected}
-                disabled={!hasSelected}
+                type="button"
+                onClick={() => void onDeleteSelected()}
+                disabled={d || !hasSelected}
                 className={`${styles.actionButton} ${styles.deleteSelectedButton}`}
             >
                 選択削除
             </button>
             <button
-                onClick={onDeleteAll}
-                disabled={!hasTodos}
+                type="button"
+                onClick={() => void onDeleteAll()}
+                disabled={d || !hasTodos}
                 className={`${styles.actionButton} ${styles.deleteAllButton}`}
             >
                 全削除
@@ -32,4 +37,3 @@ export function TodoActions({
         </div>
     )
 }
-

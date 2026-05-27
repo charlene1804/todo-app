@@ -4,6 +4,11 @@
     gap: 1rem;
 }
 
+.statusMessage {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 .todoList {
     list-style: none;
     padding: 0;

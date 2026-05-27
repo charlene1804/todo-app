@@ -2,16 +2,21 @@ import { useState } from "react"
 import styles from "./TodoInput.module.css"
 
 interface TodoInputProps {
-    onAdd: (text: string) => void
+    onAdd: (text: string) => boolean | Promise<boolean>
+    disabled?: boolean
 }
 
-export function TodoInput({ onAdd }: TodoInputProps) {
+export function TodoInput({ onAdd, disabled }: TodoInputProps) {
     const [text, setText] = useState("")
     const [isComposing, setIsComposing] = useState(false)
 
-    const handleSubmit = () => {
-        onAdd(text)
-        setText("")
+    const handleSubmit = async () => {
+        if (disabled) return
+        const trimmed = text
+        const ok = await Promise.resolve(onAdd(trimmed))
+        if (ok !== false) {
+            setText("")
+        }
     }
 
     return (
@@ -24,16 +29,21 @@ export function TodoInput({ onAdd }: TodoInputProps) {
                 onCompositionEnd={() => setIsComposing(false)}
                 onKeyDown={(event) => {
                     if (event.key === "Enter" && !isComposing) {
-                        handleSubmit()
+                        void handleSubmit()
                     }
                 }}
                 placeholder="ここにTODOを入力"
                 className={styles.input}
+                disabled={disabled}
             />
-            <button onClick={handleSubmit} className={styles.addButton}>
+            <button
+                type="button"
+                onClick={() => void handleSubmit()}
+                className={styles.addButton}
+                disabled={disabled}
+            >
                 追加
             </button>
         </div>
     )
 }
-
