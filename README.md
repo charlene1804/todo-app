@@ -79,7 +79,7 @@ JWT payload: `{ userId, email }`. Todo queries are scoped by `userId` from the t
 4. **Client** — Copy `client/.env.example` → `client/.env`. Set `VITE_API_URL` (e.g. `http://localhost:3001`, no trailing slash).
 5. **Run** — `yarn dev` starts API + Vite, or use `yarn dev:server` and `yarn dev:client` in two terminals. App: port **18080** (see `client/vite.config.ts`). Register at `/register`, then use `/`.
 
-**Checks:** `yarn lint`, `yarn build`.
+**Checks:** `yarn lint`, `yarn test`, `yarn build`.
 
 ---
 
@@ -109,6 +109,32 @@ JWT payload: `{ userId, email }`. Todo queries are scoped by `userId` from the t
 - **REST + JWT** — small surface area: register/login/me + todos CRUD behind one middleware pattern.
 - **Client data loading** — hooks and `fetch` only; no global store for a single list.
 - **Monorepo layout** — `client/` and `server/` as deploy roots without extra orchestration.
+
+---
+
+## Scope and quality
+
+**In scope for this MVP**
+
+- End-to-end user flow: register → login → CRUD todos with server-side user isolation.
+- Deployed client + API + managed Postgres.
+- **CI** (`.github/workflows/ci.yml`) on push/PR: `yarn lint`, `yarn test`, `yarn build` with placeholder `DATABASE_URL` / `JWT_SECRET` (tests do not require a live database).
+- **API validation** — Zod on request bodies for `/auth` and `/todos` (`server/src/validation/schemas.ts`).
+- **Automated tests**
+  - **Server** — Vitest + Supertest: health, validation errors, unauthenticated access to `/todos`.
+  - **Client** — Vitest + Testing Library: `TodoItem`, `TodoInput`, `TodoActions` (toggle, add, bulk-delete controls).
+
+**Intentionally not included**
+
+- **E2E** — no Playwright/Cypress; manual checks against the live demo for full browser flows.
+- **Auth extras** — no refresh tokens, password reset, or email verification.
+- **Product features** — no pagination, search, sorting, tags, or due dates.
+- **Observability** — no structured logging, metrics, or APM.
+- **Hardening** — no rate limiting, CSRF tokens (Bearer API from SPA), or audit trail.
+- **Test depth** — no DB-backed integration suite in CI; no tests for React Router, `useTodos`, or the fetch layer; routing smoke tests were dropped as low value.
+- **Validation surface** — Zod at the API boundary only; the client relies on basic UX checks, not mirrored schemas.
+
+These boundaries keep the repo small enough while still showing migration, auth, persistence, deploy, and a minimal quality bar.
 
 ---
 
@@ -185,7 +211,7 @@ Private / personal portfolio
 4. `client/.env.example` を `client/.env` にコピーし、`VITE_API_URL` を設定（末尾スラッシュなし）
 5. `yarn dev` で API と Vite を同時起動（または `yarn dev:server` と `yarn dev:client`）。アプリは **18080** 番ポート。`/register` で登録後、`/` で利用
 
-**確認:** `yarn lint` / `yarn build`
+**確認:** `yarn lint` / `yarn test` / `yarn build`
 
 ## デプロイ
 
@@ -209,6 +235,28 @@ Private / personal portfolio
 - **REST + JWT** — 認証と TODO の API 面を小さく保つ。
 - **クライアント** — 単一リストのためフックと `fetch` に集約（グローバルストアは未使用）。
 - **モノレポ** — `client/` と `server/` をそのまま Vercel / Render のルートに対応。
+
+## スコープと品質
+
+**この MVP に含めるもの**
+
+- 登録 → ログイン → TODO CRUD（サーバー側でユーザー単位に分離）の一連の流れ。
+- クライアント・API・マネージド Postgres のデプロイ。
+- **CI**（`.github/workflows/ci.yml`）— push/PR で `yarn lint`・`yarn test`・`yarn build`（プレースホルダの `DATABASE_URL` / `JWT_SECRET`、テストは実 DB 不要）。
+- **API バリデーション** — `/auth` と `/todos` のリクエスト本文を Zod で検証（`server/src/validation/schemas.ts`）。
+- **自動テスト**
+  - **サーバー** — Vitest + Supertest: ヘルス、バリデーションエラー、未認証の `/todos`。
+  - **クライアント** — Vitest + Testing Library: `TodoItem`・`TodoInput`・`TodoActions`。
+
+**意図的に含めないもの**
+
+- **E2E** — Playwright/Cypress なし。ブラウザ全体の確認はライブデモでの手動確認。
+- **認証の拡張** — リフレッシュトークン、パスワードリセット、メール確認なし。
+- **機能拡張** — ページネーション、検索、ソート、タグ、期限なし。
+- **可観測性** — 構造化ログ、メトリクス、APM なし。
+- **堅牢化** — レート制限、CSRF（SPA から Bearer API）、監査ログなし。
+- **テストの深さ** — CI での DB 連携テストなし。React Router・`useTodos`・fetch 層のテストなし。ルーティングのスモークテストは価値が低いため削除。
+- **バリデーション** — API 境界の Zod のみ。クライアントは簡易 UX チェックのみ。
 
 ## ライセンス
 
