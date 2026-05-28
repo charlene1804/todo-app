@@ -7,9 +7,7 @@
       "server"
     ],
     "nohoist": [
-      "client/vite",
-      "client/@vitejs/plugin-react",
-      "client/@types/node"
+      "client/**"
     ]
   },
   "scripts": {
@@ -18,12 +16,15 @@
     "dev:server": "yarn workspace server dev",
     "build": "yarn workspace client build && yarn workspace server build",
     "lint": "yarn workspace client lint",
-    "test": "yarn workspace server test",
+    "test": "yarn workspace server test && yarn workspace client test",
     "db:generate": "yarn workspace server prisma generate",
     "db:migrate": "yarn workspace server prisma migrate dev",
     "db:migrate:deploy": "yarn workspace server prisma migrate deploy"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "resolutions": {
+    "vite": "7.2.4"
   }
 }
