@@ -6,7 +6,14 @@
 
 .statusMessage {
     margin: 0;
+    min-height: 1.35em;
     font-size: 0.9rem;
+    line-height: 1.35;
+    color: var(--status-color, inherit);
+}
+
+.statusMessage:empty {
+    visibility: hidden;
 }
 
 .todoList {

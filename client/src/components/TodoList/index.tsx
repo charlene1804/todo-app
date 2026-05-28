@@ -7,7 +7,7 @@ import styles from "./TodoList.module.css"
 export default function TodoList() {
     const {
         todos,
-        isLoading,
+        isInitialLoading,
         error,
         isAuthenticated,
         hasApiUrl,
@@ -21,21 +21,26 @@ export default function TodoList() {
     } = useTodos()
 
     const showLoginHint =
-        hasApiUrl && !isAuthenticated && !isLoading && !error
+        hasApiUrl && !isAuthenticated && !isInitialLoading && !error
+
+    const statusText = error
+        ? error
+        : isInitialLoading
+          ? "読み込み中..."
+          : showLoginHint
+            ? "ログインしてください"
+            : ""
 
     return (
         <div className={styles.container}>
-            {error ? (
-                <p className={styles.statusMessage} role="alert">
-                    {error}
-                </p>
-            ) : null}
-            {isLoading ? (
-                <p className={styles.statusMessage}>読み込み中...</p>
-            ) : null}
-            {showLoginHint ? (
-                <p className={styles.statusMessage}>ログインしてください</p>
-            ) : null}
+            <p
+                className={styles.statusMessage}
+                role={error ? "alert" : "status"}
+                aria-live="polite"
+                aria-busy={isInitialLoading}
+            >
+                {statusText}
+            </p>
 
             <TodoInput onAdd={addTodo} disabled={interactionsDisabled} />
 

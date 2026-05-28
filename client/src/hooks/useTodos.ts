@@ -15,24 +15,24 @@ function errorMessage(e: unknown): string {
 
 export function useTodos() {
     const [todos, setTodos] = useState<Todo[]>([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isInitialLoading, setIsInitialLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     const isAuthenticated = Boolean(getAccessToken())
     const hasApiUrl = Boolean(apiBaseUrl())
 
     const loadTodos = useCallback(async () => {
-        setIsLoading(true)
+        setIsInitialLoading(true)
         setError(null)
         if (!apiBaseUrl()) {
             setTodos([])
             setError("VITE_API_URL が未設定です")
-            setIsLoading(false)
+            setIsInitialLoading(false)
             return
         }
         if (!getAccessToken()) {
             setTodos([])
-            setIsLoading(false)
+            setIsInitialLoading(false)
             return
         }
         try {
@@ -42,7 +42,7 @@ export function useTodos() {
             setError(errorMessage(e))
             setTodos([])
         } finally {
-            setIsLoading(false)
+            setIsInitialLoading(false)
         }
     }, [])
 
@@ -63,7 +63,8 @@ export function useTodos() {
             window.removeEventListener("access-token-changed", onTokenChange)
     }, [loadTodos])
 
-    const interactionsDisabled = isLoading || !hasApiUrl || !isAuthenticated
+    const interactionsDisabled =
+        isInitialLoading || !hasApiUrl || !isAuthenticated
 
     const addTodo = useCallback(
         async (text: string): Promise<boolean> => {
@@ -74,7 +75,6 @@ export function useTodos() {
                 return false
             }
             setError(null)
-            setIsLoading(true)
             try {
                 const created = await todosApi.createTodo(trimmed)
                 setTodos((prev) => [...prev, created])
@@ -82,8 +82,6 @@ export function useTodos() {
             } catch (e) {
                 setError(errorMessage(e))
                 return false
-            } finally {
-                setIsLoading(false)
             }
         },
         [hasApiUrl]
@@ -94,7 +92,6 @@ export function useTodos() {
         const current = todos.find((t) => t.id === id)
         if (!current) return
         setError(null)
-        setIsLoading(true)
         try {
             const updated = await todosApi.patchTodo(id, {
                 completed: !current.completed,
@@ -104,8 +101,6 @@ export function useTodos() {
             )
         } catch (e) {
             setError(errorMessage(e))
-        } finally {
-            setIsLoading(false)
         }
     }, [hasApiUrl, todos])
 
@@ -113,14 +108,11 @@ export function useTodos() {
         async (id: string) => {
             if (!hasApiUrl || !getAccessToken()) return
             setError(null)
-            setIsLoading(true)
             try {
                 await todosApi.deleteTodo(id)
                 setTodos((prev) => prev.filter((t) => t.id !== id))
             } catch (e) {
                 setError(errorMessage(e))
-            } finally {
-                setIsLoading(false)
             }
         },
         [hasApiUrl]
@@ -131,14 +123,11 @@ export function useTodos() {
         const ids = todos.filter((t) => t.completed).map((t) => t.id)
         if (ids.length === 0) return
         setError(null)
-        setIsLoading(true)
         try {
             await Promise.all(ids.map((id) => todosApi.deleteTodo(id)))
             setTodos((prev) => prev.filter((t) => !t.completed))
         } catch (e) {
             setError(errorMessage(e))
-        } finally {
-            setIsLoading(false)
         }
     }, [hasApiUrl, todos])
 
@@ -146,14 +135,11 @@ export function useTodos() {
         if (!hasApiUrl || !getAccessToken()) return
         if (todos.length === 0) return
         setError(null)
-        setIsLoading(true)
         try {
             await Promise.all(todos.map((t) => todosApi.deleteTodo(t.id)))
             setTodos([])
         } catch (e) {
             setError(errorMessage(e))
-        } finally {
-            setIsLoading(false)
         }
     }, [hasApiUrl, todos])
 
@@ -164,7 +150,7 @@ export function useTodos() {
 
     return {
         todos,
-        isLoading,
+        isInitialLoading,
         error,
         isAuthenticated,
         hasApiUrl,
